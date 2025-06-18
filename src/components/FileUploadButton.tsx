@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -22,10 +23,11 @@ export function FileUploadButton({ onFileSelect, className, disabled }: FileUplo
     if (file) {
       onFileSelect(file);
     }
-    // Reset file input to allow uploading the same file again
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    // Resetting the input value here might sometimes cause issues with certain browsers or event timings.
+    // The browser typically handles allowing re-selection of the same file.
+    // if (fileInputRef.current) {
+    //   fileInputRef.current.value = '';
+    // }
   };
 
   return (
