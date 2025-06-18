@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -166,7 +167,11 @@ export default function ImageEditorClient() {
             <CardDescription>Upload, edit, and resize your image.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <FileUploadButton onFileSelect={handleFileSelect} className="w-full" disabled={isProcessing}/>
+            <FileUploadButton 
+              onFileSelect={handleFileSelect} 
+              className="w-full bg-accent text-accent-foreground hover:bg-accent/90" 
+              disabled={isProcessing}
+            />
 
             {originalImageUri && (
               <>
