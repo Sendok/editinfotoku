@@ -18,6 +18,7 @@ import { AdPlaceholder } from '@/components/AdPlaceholder';
 import { PremiumFeatureLock } from '@/components/PremiumFeatureLock';
 import { Wand2, Trash2, Download, ShoppingCart, ShoppingBag, Instagram, Loader2, RefreshCcw } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 const PRESETS: Record<string, ResizePreset> = {
   tokopedia: { id: 'tokopedia', name: 'Tokopedia', width: 800, height: 800, icon: ShoppingCart, aspectRatio: '1:1' },
@@ -29,11 +30,12 @@ const PRESETS: Record<string, ResizePreset> = {
 export default function ImageEditorClient() {
   const [originalImageFile, setOriginalImageFile] = React.useState<File | null>(null);
   const [originalImageUri, setOriginalImageUri] = React.useState<string | null>(null);
-  const [processedImageUri, setProcessedImageUri] = React.useState<string | null>(null); // After BG removal or generation
-  const [finalImageUri, setFinalImageUri] = React.useState<string | null>(null); // After resizing
+  const [processedImageUri, setProcessedImageUri] = React.useState<string | null>(null);
+  const [finalImageUri, setFinalImageUri] = React.useState<string | null>(null);
 
   const [isLoadingAi, setIsLoadingAi] = React.useState(false);
   const [isLoadingResize, setIsLoadingResize] = React.useState(false);
+  const [isDraggingOver, setIsDraggingOver] = React.useState(false);
   
   const [customBgPrompt, setCustomBgPrompt] = React.useState('');
   const [selectedPresetKey, setSelectedPresetKey] = React.useState<string | null>(null);
@@ -42,7 +44,7 @@ export default function ImageEditorClient() {
   const { toast } = useToast();
 
   const activeImageForDisplay = finalImageUri || processedImageUri || originalImageUri;
-  const activeImageForProcessing = processedImageUri || originalImageUri; // Image used for resizing
+  const activeImageForProcessing = processedImageUri || originalImageUri;
 
   const handleFileSelect = async (file: File) => {
     if (!file.type.startsWith('image/')) {
@@ -50,8 +52,8 @@ export default function ImageEditorClient() {
       return;
     }
     setOriginalImageFile(file);
-    setProcessedImageUri(null); // Reset downstream images
-    setFinalImageUri(null); // Reset downstream images
+    setProcessedImageUri(null);
+    setFinalImageUri(null);
     try {
       const dataUri = await fileToDataUri(file);
       setOriginalImageUri(dataUri);
@@ -68,7 +70,7 @@ export default function ImageEditorClient() {
       return;
     }
     setIsLoadingAi(true);
-    setFinalImageUri(null); // Reset resize if AI op is done again
+    setFinalImageUri(null);
     try {
       const result = await processImageWithAI(originalImageUri, prompt);
       if (result.error) {
@@ -142,6 +144,49 @@ export default function ImageEditorClient() {
   
   const isProcessing = isLoadingAi || isLoadingResize;
 
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isProcessing) return;
+    setIsDraggingOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isProcessing) return;
+    // Check if the leave target is outside the drop zone
+     if (e.currentTarget.contains(e.relatedTarget as Node)) {
+      return;
+    }
+    setIsDraggingOver(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isProcessing) return;
+    if (!isDraggingOver) { // To prevent excessive state updates
+        setIsDraggingOver(true);
+    }
+  };
+
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isProcessing) return;
+    setIsDraggingOver(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      await handleFileSelect(file); 
+      e.dataTransfer.clearData();
+    } else {
+       toast({ title: "Drop Error", description: "No valid image file was dropped.", variant: "destructive" });
+    }
+  };
+
+
   return (
     <div className="container mx-auto p-4 md:p-8">
       <header className="text-center mb-8 md:mb-12">
@@ -150,8 +195,18 @@ export default function ImageEditorClient() {
       </header>
 
       <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-        <div className="md:col-span-2">
-          <ImageDisplay imageUri={activeImageForDisplay} isLoading={isLoadingAi || isLoadingResize} />
+        <div 
+          className="md:col-span-2"
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+          <ImageDisplay 
+            imageUri={activeImageForDisplay} 
+            isLoading={isLoadingAi || isLoadingResize} 
+            isDraggingOver={isDraggingOver}
+          />
           {originalImageUri && (
             <div className="mt-4 flex justify-end">
               <Button variant="outline" onClick={handleReset} disabled={isProcessing}>
