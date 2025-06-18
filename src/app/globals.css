@@ -10,7 +10,7 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 197 71% 53%; /* #29ABE2 Vibrant Blue */
+    --primary: 200 60% 45%; /* Sea Blue */
     --primary-foreground: 0 0% 100%;
     --secondary: 210 17% 85%; /* Lighter gray for secondary elements */
     --secondary-foreground: 240 10% 3.9%;
@@ -22,8 +22,8 @@
     --destructive-foreground: 0 0% 98%;
     --border: 210 17% 88%;
     --input: 210 17% 88%;
-    --ring: 197 71% 53%; /* Vibrant Blue for rings */
-    --chart-1: 197 71% 53%;
+    --ring: 200 60% 45%; /* Sea Blue for rings */
+    --chart-1: 200 60% 45%;
     --chart-2: 120 73% 75%;
     --chart-3: 210 17% 65%;
     --chart-4: 43 74% 66%;
@@ -31,12 +31,12 @@
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 197 71% 53%;
+    --sidebar-primary: 200 60% 45%;
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 120 73% 85%; /* Lighter green for sidebar accent */
     --sidebar-accent-foreground: 20 14.3% 4.1%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 197 71% 53%;
+    --sidebar-ring: 200 60% 45%;
   }
 
   .dark {
@@ -46,7 +46,7 @@
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 197 71% 63%; /* Lighter vibrant blue for dark mode */
+    --primary: 200 60% 55%; /* Lighter sea blue for dark mode */
     --primary-foreground: 0 0% 9%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
@@ -58,20 +58,20 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 197 71% 63%;
-    --chart-1: 197 71% 63%;
+    --ring: 200 60% 55%;
+    --chart-1: 200 60% 55%;
     --chart-2: 120 73% 65%;
     --chart-3: 210 17% 45%;
     --chart-4: 43 74% 56%;
     --chart-5: 27 87% 57%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 197 71% 53%;
+    --sidebar-primary: 200 60% 45%; /* Consistent with light mode primary for sidebar in dark */
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 120 73% 75%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 197 71% 53%;
+    --sidebar-ring: 200 60% 45%;
   }
 }
 
