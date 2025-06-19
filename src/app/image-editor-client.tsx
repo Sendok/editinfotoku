@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -234,7 +233,7 @@ export default function ImageEditorClient() {
                 <div>
                   <h3 className="text-lg font-semibold mb-3 font-headline">Background Tools</h3>
                   <div className="space-y-3">
-                    <Button onClick={removeBackground} className="w-full" disabled={isProcessing || !originalImageUri}>
+                    <Button onClick={removeBackground} className="w-full bg-green-400 hover:bg-green-500 text-white" disabled={isProcessing || !originalImageUri}>
                       {isLoadingAi ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Trash2 className="mr-2 h-4 w-4" />}
                       Remove Background
                     </Button>
